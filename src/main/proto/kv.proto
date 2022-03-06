@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package com.interviews.kvstore;
+
+import "google/protobuf/empty.proto";
+
+// KV Store Item
+message Item {
+   string key = 1;
+   bytes value = 2;
+}
+
+message Key {
+    string key = 1;
+}
+message AllKeys {
+  repeated Key keys = 1;
+}
+
+message AllItems {
+  repeated Item items = 1;
+}
+
+message Success {
+  bool success = 1;
+}
+
+// Get Stats
+message Stat {
+   int64 kcnt = 1;
+   int64 vsize = 2;
+   int64 getcnt = 3;
+   int64 setcnt = 4;
+   int64 delcnt= 5;
+}
+
+service KeyValService {
+    rpc Set(Item) returns (Item);
+    rpc SetAll(AllItems) returns (AllItems);
+    rpc Get(Key) returns (Item);
+    rpc GetAll(AllKeys) returns (AllItems);
+    rpc Delete(Key) returns (Success);
+    rpc DeleteAll(AllKeys) returns (Success);
+    rpc GetMetrics(google.protobuf.Empty) returns (Stat);
+}
